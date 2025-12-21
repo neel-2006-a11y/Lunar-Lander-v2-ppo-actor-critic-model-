@@ -1,0 +1,57 @@
+for 0-400   : distance cone:0.7
+for 400-800 : distance cone: 0.45
+for 800-1200: distance cone: 0.45, factor:100->150
+            : time_penalty 0.7->0.3
+            : x_pos_penalty 0.2->0.3
+            : angle_penalty 0.1->0.3, ang_vel_penalty 0.05->0.2
+            : leg rewards are only given if x_pos is within 0.6
+            : removed the downward velocity for high altitude
+            : added velocity penalty
+for 1200-1400: added a velocity penalty upon landing
+             : added angle penalty upon landing
+             : time_penalty: 0.3->0.2
+             : angle_penalty: 0.3->0.8
+             : ang_vel_penalty: 0.2->0.5
+             : y_vel_penalty: 0.1->0.5
+             : max_steps:500->700
+             1400 looks good
+for 1400-1800: max_steps:700->500
+             : time_penalty 0.2->0.4
+             : cone_penalty_constant:150->250, distance:0.45->0.3
+             # 1800 was the best after that
+             # 2000 repels from the target after it gets close
+for 1800-2200: max_steps:400
+             : y_vel_penalty:0.1
+             : removed x_vel_penalty
+for 2200-2600: y_vel_penalty:0.5
+
+starting back from 1800: y_vel_penalty=0.1, remove x_vel_penalty
+                       : time_penalty=0.6
+starting back from 2400:y_vel_penalty = 0.3 for y>0.5 and 0.6 for y<0.5
+                       : max_steps=1000
+                       : 2600 looks good, it looks like it is focusing more on 
+                         keeping the lander straight rather than centered
+                         increase x_pos_penalty 
+starting from 2600     : lowered y_vel,ang,ang_vel penalties in landing
+                       : decreased the landing distance to 0.3
+                       : and between 0.5 and 0.3 the reward reduces to 0
+                       : 2800 didn't work
+                       : maybe increase the 0.5 to 0.7 in the landing distance
+                       : and increase landing rewards
+                       : left or right->200
+                       : vel: 150->300
+                       : x_pos: 100->150
+                       : left and right:300->400
+                       : extra penalty below y=0.15
+                       : 3400 looks good
+3400:
+    increased x_penalty from 1.0 to 4.0
+5600:
+    increased y_vel_penalty:0.3->0, angle_penalty:0->0.8
+    y_vel reward = (2-y_vel)*1, angle reward (2-ang)*1
+7600: falling strategy
+    y_vel_penalty 10
+    angle_penalty:0.8->7
+    
+
+
